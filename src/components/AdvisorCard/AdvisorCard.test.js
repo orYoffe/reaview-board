@@ -12,39 +12,37 @@ const advisor = {
   languages: ["English", "German"],
 };
 
+const renderAndGetByText = (text, options) => {
+  const { getByText } = render(<AdvisorCard advisor={advisor} />);
+  return getByText(text, options);
+};
+
 describe("AdvisorCard", () => {
-  test("renders name", async () => {
-    const { getByText } = render(<AdvisorCard advisor={advisor} />);
-    const name = getByText(advisor.name);
+  describe("should display the advisor's", () => {
+    test("name", () => {
+      expect(renderAndGetByText(advisor.name)).toBeInTheDocument();
+    });
 
-    expect(name).toBeInTheDocument();
-  });
+    test("status", () => {
+      expect(
+        renderAndGetByText("Online", { exact: false })
+      ).toBeInTheDocument();
+    });
 
-  test("renders status", async () => {
-    const { getByText } = render(<AdvisorCard advisor={advisor} />);
-    const status = getByText("Online", { exact: false });
+    test("reviews count", () => {
+      expect(
+        renderAndGetByText(advisor.reviewsCount + "", { exact: false })
+      ).toBeInTheDocument();
+    });
 
-    expect(status).toBeInTheDocument();
-  });
+    test("languages", () => {
+      expect(
+        renderAndGetByText(advisor.languages.join(", "), { exact: false })
+      ).toBeInTheDocument();
+    });
 
-  test("renders reviews count", async () => {
-    const { getByText } = render(<AdvisorCard advisor={advisor} />);
-    const reviewsCount = getByText(advisor.reviewsCount + "", { exact: false });
-
-    expect(reviewsCount).toBeInTheDocument();
-  });
-
-  test("renders languages", async () => {
-    const { getByText } = render(<AdvisorCard advisor={advisor} />);
-    const languages = getByText(advisor.languages.join(", "), { exact: false });
-
-    expect(languages).toBeInTheDocument();
-  });
-
-  test("renders title", async () => {
-    const { getByText } = render(<AdvisorCard advisor={advisor} />);
-    const title = getByText(`${advisor.name} ${advisor.title}`);
-
-    expect(title).toBeInTheDocument();
+    test("title", () => {
+      renderAndGetByText(`${advisor.name} ${advisor.title}`);
+    });
   });
 });

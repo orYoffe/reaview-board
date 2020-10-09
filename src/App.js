@@ -44,7 +44,7 @@ function App() {
     }
     const { count, advisors, hasMore } = res;
 
-    setLastSearchParams({ count, advisors, hasMore });
+    setLastSearchParams({ name, language });
     setAdvisors(advisors);
     setCount(count);
     setHasMore(hasMore);

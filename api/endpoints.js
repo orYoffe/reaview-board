@@ -5,32 +5,35 @@ const languages = ["English", "German", "Spanish", "French", "Hebrew"];
 const OFFLINE = "offline";
 const ONLINE = "online";
 
-// generating fake data
-const advisors = new Array(100)
-  .fill(null)
-  .map(() => {
-    const randomNumber = Math.random();
-    const languagesCount = Math.floor(randomNumber * languages.length);
-    const advisorLanguages = new Array(languagesCount)
-      .fill(null)
-      .map((i) => languages[Math.floor(Math.random() * languages.length)]);
+const generateAdvisors = (amount) =>
+  new Array(amount)
+    .fill(null)
+    .map(() => {
+      const randomNumber = Math.random();
+      const languagesCount = Math.floor(randomNumber * languages.length);
+      const advisorLanguages = new Array(languagesCount)
+        .fill(null)
+        .map((i) => languages[Math.floor(Math.random() * languages.length)]);
 
-    return {
-      id: faker.random.uuid(),
-      name: faker.name.findName(),
-      reviewsCount: faker.random.number(),
-      avatar: faker.internet.avatar(),
-      title: faker.lorem.sentence(),
-      status: randomNumber < 0.5 ? OFFLINE : ONLINE,
-      languages: [...new Set(advisorLanguages)],
-    };
-  })
-  .sort((a, b) => {
-    if (a.status === b.status) {
-      return b.reviewsCount - a.reviewsCount;
-    }
-    return a.status === ONLINE ? -1 : 1;
-  });
+      return {
+        id: faker.random.uuid(),
+        name: faker.name.findName(),
+        reviewsCount: faker.random.number(),
+        avatar: faker.internet.avatar(),
+        title: faker.lorem.sentence(),
+        status: randomNumber < 0.5 ? OFFLINE : ONLINE,
+        languages: [...new Set(advisorLanguages)],
+      };
+    })
+    .sort((a, b) => {
+      if (a.status === b.status) {
+        return b.reviewsCount - a.reviewsCount;
+      }
+      return a.status === ONLINE ? -1 : 1;
+    });
+
+const NUMBER_OF_ADVISORS = 1000; // Change here to get a different amount of advisors
+const advisors = generateAdvisors(NUMBER_OF_ADVISORS);
 
 const getAdvisors = async (req, res) => {
   const limit = req.query.limit || 20;

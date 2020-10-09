@@ -18,6 +18,7 @@ code {
   max-width: 1200px;
   text-align: center;
 }
+
 .container > * {
   text-align: left;
 }

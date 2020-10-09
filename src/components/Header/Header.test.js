@@ -2,23 +2,27 @@ import React from "react";
 import Header from "./Header";
 import { render } from "../../setupTests";
 
+const renderAndGetByText = (text) => {
+  const { getByText } = render(<Header />);
+  return getByText(text);
+};
+
 describe("Header", () => {
-  test("renders title", async () => {
-    const { getByText } = render(<Header />);
+  describe("should display ", () => {
+    test("title", () => {
+      expect(renderAndGetByText("Advisors board")).toBeInTheDocument();
+    });
 
-    const headerTitle = getByText("Advisors board");
-    expect(headerTitle).toBeInTheDocument();
-  });
-  test("renders link to another tab", async () => {
-    const { getByText } = render(<Header />);
+    test("link to another tab", () => {
+      const link = renderAndGetByText("Check the code on github");
+      expect(link).toBeInTheDocument();
+      const anchorTag = link.closest("a");
 
-    const link = getByText("Check the code on github");
-    expect(link).toBeInTheDocument();
-
-    expect(link.closest("a")).toHaveAttribute(
-      "href",
-      "https://github.com/orYoffe/review-board"
-    );
-    expect(link.closest("a")).toHaveAttribute("target", "_blank");
+      expect(anchorTag).toHaveAttribute(
+        "href",
+        "https://github.com/orYoffe/review-board"
+      );
+      expect(anchorTag).toHaveAttribute("target", "_blank");
+    });
   });
 });
